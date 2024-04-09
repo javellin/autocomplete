@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { AutocompleteConfig } from "./common/utils";
-import { Autocomplete } from "./components/Autocomplete";
+import { Autocomplete } from "./components/Autocomplete/Autocomplete";
+
+import "./index.css";
 
 interface Post {
   name: string;
@@ -27,12 +29,19 @@ function App() {
   };
 
   return (
-    <div>
+    <div className="root">
       <h2>Autocomplete challenge</h2>
       <p>Try typing words like "Jurnal" or "Murray"</p>
-      <div>
+      <div className="root-container">
         <Autocomplete config={config} setValue={handleChangeValue} />
-        {!!value && <p>Value: {value?.name}</p>}
+        {!!value && (
+          <div>
+            <p className="root-container__value">Value: {value?.name}</p>
+            <p className="root-container__value">
+              Identifier: {value?.identifier}
+            </p>
+          </div>
+        )}
       </div>
     </div>
   );

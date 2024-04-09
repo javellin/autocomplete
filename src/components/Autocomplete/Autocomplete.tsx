@@ -4,7 +4,9 @@ import {
   debounce,
   deriveOptionsBasedOnConfig,
   highlightWords,
-} from "../common/utils";
+} from "../../common/utils";
+
+import "./styles.css";
 
 export interface AutoCompleteProps<T> {
   config: AutocompleteConfig<T>;
@@ -14,6 +16,7 @@ export interface AutoCompleteProps<T> {
 export function Autocomplete<T>({ config, setValue }: AutoCompleteProps<T>) {
   const [options, setOptions] = useState<T[]>([]);
   const [inputValue, setInputValue] = useState<string>("");
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleClear = () => {
     setOptions([]);
@@ -28,10 +31,18 @@ export function Autocomplete<T>({ config, setValue }: AutoCompleteProps<T>) {
       return;
     }
 
-    const newOptions = await deriveOptionsBasedOnConfig(config, words);
+    try {
+      setIsLoading(true);
 
-    setOptions(newOptions);
-    setInputValue(words);
+      const newOptions = await deriveOptionsBasedOnConfig(config, words);
+
+      setOptions(newOptions);
+      setInputValue(words);
+    } catch (e) {
+      console.error(e);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const handleSelect = (option: T) => {
@@ -46,12 +57,18 @@ export function Autocomplete<T>({ config, setValue }: AutoCompleteProps<T>) {
   const debouncedHandleChange = debounce(handleChange);
 
   return (
-    <div>
-      <input onChange={debouncedHandleChange} />
+    <div className="autocomplete-container">
+      <input className="autocomplete-input" onChange={debouncedHandleChange} />
+      {isLoading && (
+        <div className="autocomplete-icon-container">
+          <i className="autocomplete-loader"></i>
+        </div>
+      )}
       {!!options.length && (
-        <ul>
+        <ul className="autocomplete-options">
           {options.map((option) => (
             <li
+              className="autocomplete-options__item"
               key={option[config.identifier] as string}
               onClick={() => handleSelect(option)}
             >
