@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
 import {
-  AutocompleteConfig,
   debounce,
   deriveOptionsBasedOnConfig,
   highlightWords,
 } from "../../common/utils";
 
 import "./styles.css";
+import { AutocompleteConfig } from "./types";
 
 export interface AutoCompleteProps<T> {
   config: AutocompleteConfig<T>;
@@ -16,7 +16,7 @@ export interface AutoCompleteProps<T> {
 export function Autocomplete<T>({ config, setValue }: AutoCompleteProps<T>) {
   const [options, setOptions] = useState<T[]>([]);
   const [inputValue, setInputValue] = useState<string>("");
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const handleClear = () => {
     setOptions([]);
@@ -24,9 +24,9 @@ export function Autocomplete<T>({ config, setValue }: AutoCompleteProps<T>) {
   };
 
   const handleChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const words = e.target.value;
+    const searchText = e.target.value;
 
-    if (!words) {
+    if (!searchText) {
       handleClear();
       return;
     }
@@ -34,10 +34,10 @@ export function Autocomplete<T>({ config, setValue }: AutoCompleteProps<T>) {
     try {
       setIsLoading(true);
 
-      const newOptions = await deriveOptionsBasedOnConfig(config, words);
+      const newOptions = await deriveOptionsBasedOnConfig(config, searchText);
 
       setOptions(newOptions);
-      setInputValue(words);
+      setInputValue(searchText);
     } catch (e) {
       console.error(e);
     } finally {

@@ -1,8 +1,8 @@
 import { useState } from "react";
-import { AutocompleteConfig } from "./common/utils";
 import { Autocomplete } from "./components/Autocomplete/Autocomplete";
 
 import "./index.css";
+import { AutocompleteConfig } from "./components/Autocomplete/types";
 
 interface Post {
   name: string;

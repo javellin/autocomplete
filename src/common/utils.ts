@@ -1,9 +1,4 @@
-export interface AutocompleteConfig<T> {
-  identifier: keyof T;
-  displayField: keyof T;
-  data?: T[] | null;
-  fetchData?(search: string): Promise<T[]> | null;
-}
+import { AutocompleteConfig } from "../components/Autocomplete/types";
 
 export const debounce = (
   func: (...args: any[]) => void
@@ -19,11 +14,11 @@ export const debounce = (
   };
 };
 
-export const highlightWords = (words: string): void => {
+export const highlightWords = (searchText: string): void => {
   const items = document.querySelectorAll("li");
   items.forEach((item) => {
-    const regex = new RegExp(words, "gi");
-    const replacement = "<b>" + words + "</b>";
+    const regex = new RegExp(searchText, "gi");
+    const replacement = "<b>" + searchText + "</b>";
     if (item.textContent) {
       item.innerHTML = item.textContent.replace(regex, replacement);
     }
@@ -32,18 +27,18 @@ export const highlightWords = (words: string): void => {
 
 export async function deriveOptionsBasedOnConfig<T>(
   config: AutocompleteConfig<T>,
-  words: string
+  searchText: string
 ) {
-  if (config.data) {
+  if (Array.isArray(config.data)) {
     return config.data.filter((item) =>
       (item[config.displayField] as string)
         .toLocaleLowerCase()
-        .includes(words.toLocaleLowerCase())
+        .includes(searchText.toLocaleLowerCase())
     );
   }
 
-  if (config.fetchData) {
-    const data = await config.fetchData(words);
+  if (config.fetchData instanceof Function) {
+    const data = await config.fetchData(searchText);
     return data ?? [];
   }
 

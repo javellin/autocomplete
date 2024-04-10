@@ -1,10 +1,6 @@
 import { JSDOM } from "jsdom";
-import {
-  AutocompleteConfig,
-  debounce,
-  deriveOptionsBasedOnConfig,
-  highlightWords,
-} from "./utils";
+import { debounce, deriveOptionsBasedOnConfig, highlightWords } from "./utils";
+import { AutocompleteConfig } from "../components/Autocomplete/types";
 
 // Mock setTimeout
 jest.useFakeTimers();
