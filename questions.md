@@ -38,7 +38,7 @@
    ```
 
    Sometimes adding extra divs just to serve as a wrapper can break your app, because of a display:flex for example. Or even cause bad html syntax when using
-   elemnents with specific structures like <ul><li></li></ul>
+   elemnents with specific structures like `<ul><li></li></ul>`
 
 6. Give 3 examples of the HOC pattern.
    A: Authentication, logging and prefetching data
