@@ -1,12 +1,9 @@
 import { useEffect, useState } from "react";
-import {
-  debounce,
-  deriveOptionsBasedOnConfig,
-  highlightWords,
-} from "../../common/utils";
 
 import "./styles.css";
 import { AutocompleteConfig } from "./types";
+import { deriveOptionsBasedOnConfig, highlightWords } from "./helpers";
+import { debounce } from "../../common/utils";
 
 export interface AutoCompleteProps<T> {
   config: AutocompleteConfig<T>;
@@ -21,6 +18,11 @@ export function Autocomplete<T>({ config, setValue }: AutoCompleteProps<T>) {
   const handleClear = () => {
     setOptions([]);
     setInputValue("");
+  };
+
+  const handleSelect = (option: T) => {
+    setValue(option);
+    handleClear();
   };
 
   const handleChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -45,16 +47,11 @@ export function Autocomplete<T>({ config, setValue }: AutoCompleteProps<T>) {
     }
   };
 
-  const handleSelect = (option: T) => {
-    setValue(option);
-    handleClear();
-  };
+  const debouncedHandleChange = debounce(handleChange);
 
   useEffect(() => {
     highlightWords(inputValue);
   }, [inputValue]);
-
-  const debouncedHandleChange = debounce(handleChange);
 
   return (
     <div className="autocomplete-container">
