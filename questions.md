@@ -1,5 +1,5 @@
 1. **What is the difference between Component and PureComponent?
-   Give an example where it might break my app.**\\
+   Give an example where it might break my app.**\
    A: PureComponent will run a shallow version of shouldComponentUpdate when checking for rerendering (e.g comparing only the object's references instead of its attributes and values) for performance reasons (less checks). In Component you have full control of shouldComponentUpdate on every render cycle.
 
 2. Context + ShouldComponentUpdate might be dangerous. Why is
