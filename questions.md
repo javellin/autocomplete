@@ -1,5 +1,5 @@
 1. What is the difference between Component and PureComponent?
-   Give an example where it might break my app.
+   Give an example where it might break my app.\
    A: PureComponent will run a shallow version of shouldComponentUpdate when checking for rerendering (e.g comparing only the object's references instead of its attributes and values) for performance reasons (less checks). In Component you have full control of shouldComponentUpdate on every render cycle.
 
 2. Context + ShouldComponentUpdate might be dangerous. Why is
@@ -11,13 +11,11 @@
    A: useImperativeHandle, useContext and calling a function from the parent with the child data inside
 
 4. Give 2 ways to prevent components from re-rendering.
-   A: useCallback can be used to prevent functions to be unnecessarily recreated and therefore rerendering the component.
-   The same for useMemo when memoizing variables.
+   A: useCallback can be used to prevent functions to be unnecessarily recreated and therefore rerendering the component. The same for useMemo when memoizing variables.
 
 5. What is a fragment and why do we need it? Give an example where it
    might break my app.
-   A: So you don't need to introduce addicional html. Every time you return a function component you can only return a single node,
-   This is not allowed:
+   A: So you don't need to introduce addicional html. Every time you return a function component you can only return a single node This is not allowed:
 
    ```
    items.map(item => (
